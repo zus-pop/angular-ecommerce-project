@@ -17,7 +17,7 @@ export class CartService {
     // check if the cart already has this product
     let alreadyExistsInCart: boolean = false;
     let existingCartItem: CartItem = undefined!;
-    //find he item in the cart based on item id
+    //find the item in the cart based on item id
     if (this.cartItems.length) {
       existingCartItem = this.cartItems.find((ci: CartItem) => ci.id === cartItem.id)!;
     }
@@ -58,5 +58,23 @@ export class CartService {
 
     console.log(`totalPrice: ${totalPriceValue.toFixed(2)}, totalQuantity: ${totalQuantityValue}`)
     console.log(`-----------------------------------`)
+  }
+
+  decrement(cartItem: CartItem) {
+    cartItem.quantity--;
+    if (cartItem.quantity === 0) {
+      this.remove(cartItem);
+    }
+    else {
+      this.computeCartTotal();
+    }
+  }
+
+  remove(cartItem: CartItem) {
+    const index = this.cartItems.findIndex((ci: CartItem) => ci.id === cartItem.id);
+    if (index > -1) {
+      this.cartItems.splice(index, 1);
+      this.computeCartTotal();
+    }
   }
 }

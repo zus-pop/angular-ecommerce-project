@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ProductService } from './services/product.service';
@@ -18,7 +18,8 @@ import { CartStatusComponent } from "./components/cart-status/cart-status.compon
     HttpClientModule,
     SearchComponent,
     NgbModule,
-    CartStatusComponent
+    CartStatusComponent,
+    RouterLink
 ],
   providers: [ProductService],
   templateUrl: './app.component.html',
