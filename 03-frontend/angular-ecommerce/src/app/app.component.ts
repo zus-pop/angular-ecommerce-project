@@ -7,6 +7,7 @@ import { ProductCategoryMenuComponent } from './components/product-category-menu
 import { SearchComponent } from './components/search/search.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CartStatusComponent } from "./components/cart-status/cart-status.component";
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,8 @@ import { CartStatusComponent } from "./components/cart-status/cart-status.compon
     SearchComponent,
     NgbModule,
     CartStatusComponent,
-    RouterLink
+    RouterLink,
+    ReactiveFormsModule
 ],
   providers: [ProductService],
   templateUrl: './app.component.html',
