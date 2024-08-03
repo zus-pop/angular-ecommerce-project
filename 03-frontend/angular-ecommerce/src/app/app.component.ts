@@ -6,6 +6,7 @@ import { ProductService } from './services/product.service';
 import { ProductCategoryMenuComponent } from './components/product-category-menu/product-category-menu.component';
 import { SearchComponent } from './components/search/search.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CartStatusComponent } from "./components/cart-status/cart-status.component";
 
 @Component({
   selector: 'app-root',
@@ -16,8 +17,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProductCategoryMenuComponent,
     HttpClientModule,
     SearchComponent,
-    NgbModule
-  ],
+    NgbModule,
+    CartStatusComponent
+],
   providers: [ProductService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
