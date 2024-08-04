@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Luv2ShopFormService } from '../../services/luv2-shop-form.service';
+import { Country } from '../../common/country';
+import { State } from '../../common/state';
 
 @Component({
   selector: 'app-checkout',
@@ -18,6 +20,10 @@ export class CheckoutComponent implements OnInit {
 
   creditCardYears: number[] = [];
   creaditCardMonths: number[] = [];
+
+  countries: Country[] = [];
+  shippingStates: State[] = [];
+  billingStates: State[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -71,16 +77,30 @@ export class CheckoutComponent implements OnInit {
         console.log('credit card year: ' + JSON.stringify(data));
         this.creditCardYears = data;
       })
+
+    // populate countries
+    this.luv2ShopService
+      .getCountries()
+      .subscribe(data => {
+        console.log('countries: ' + JSON.stringify(data));
+        this.countries = data;
+      })
   }
 
   copyShippingToBilling(event: Event) {
 
     if ((event.target as HTMLInputElement).checked) {
+      // bug fix here (copy inappropriate problem)
+      this.billingStates = this.shippingStates;
+      
       this.checkoutFormGroup.controls['billingAddress']
         .setValue(this.checkoutFormGroup.controls['shippingAddress'].value);
+
     }
     else {
       this.checkoutFormGroup.controls['billingAddress'].reset();
+
+      this.billingStates = [];
     }
   }
 
@@ -107,5 +127,30 @@ export class CheckoutComponent implements OnInit {
   onSubmit() {
     console.log('Handling submit event')
     console.log(this.checkoutFormGroup.value);
+
+    console.log('The shipping address: ' + this.checkoutFormGroup?.get('shippingAddress')?.value.country.name)
+    console.log('The shipping address: ' + this.checkoutFormGroup?.get('shippingAddress')?.value.state.name)
+  }
+
+  getStates(formGroupName: string) {
+    const formGroup = this.checkoutFormGroup.get(formGroupName);
+
+    const countryCode = formGroup?.value.country.code;
+    console.log(countryCode)
+
+    this.luv2ShopService
+      .getStates(countryCode)
+      .subscribe(data => {
+        console.log(`states: ${JSON.stringify(data)}`);
+
+        if (formGroupName === 'shippingAddress') {
+          this.shippingStates = data;
+        }
+        else {
+          this.billingStates = data;
+        }
+
+        formGroup?.get('state')?.setValue(data[0]);
+      })
   }
 }
